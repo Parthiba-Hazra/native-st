@@ -1,0 +1,91 @@
+swagger: '2.0'
+info:
+  title: File Storage API
+  description: API for file storage and retrieval
+  version: 1.0.0
+schemes:
+  - https
+basePath: /v1
+paths:
+  /files:
+    post:
+      summary: Upload a file
+      operationId: uploadFile
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - in: formData
+          name: file
+          type: file
+      responses:
+        '201':
+          description: File uploaded successfully
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                description: The ID of the uploaded file
+              url:
+                type: string
+                format: uri
+                description: The URL of the uploaded file
+    get:
+      summary: Get a list of all files
+      operationId: listFiles
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: List of files retrieved successfully
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: The ID of the file
+                url:
+                  type: string
+                  format: uri
+                  description: The URL of the file
+  /files/{id}:
+    get:
+      summary: Download a file by ID
+      operationId: downloadFile
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      responses:
+        '200':
+          description: File downloaded successfully
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                description: The ID of the downloaded file
+              url:
+                type: string
+                format: uri
+                description: The URL of the downloaded file
+    delete:
+      summary: Delete a file by ID
+      operationId: deleteFile
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      responses:
+        '204':
+          description: File deleted successfully
